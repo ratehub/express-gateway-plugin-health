@@ -1,0 +1,29 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - 'migrate-gh-actions'
+
+env:
+  PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+
+jobs:
+  publish:
+    name: Publish npm package
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Configure an NPM registry
+      run: npm config set registry https://packagecloud.io/ratehub/npm/npm/
+    - name: Configure read only access to a private NPM registry
+      run: |
+        echo always-auth=true > .npmrc
+        echo @ratehub:registry=https://packagecloud.io/ratehub/npm/npm/ > .npmrc
+        echo //packagecloud.io/ratehub/npm/npm/:_authToken=${{ secrets.PACKAGECLOUD_TOKEN }} >> .npmrc
+    - name: Install dependencies
+      run: |
+        npm ci
+#        npm install
+#        npm publish
