@@ -27,7 +27,6 @@ jobs:
         echo //packagecloud.io/ratehub/npm/npm/:_authToken=${{ secrets.PACKAGECLOUD_TOKEN }} >> .npmrc
     - name: Install dependencies
       run: |
-        npm ci
-#        npm install
-#        npm publish
+        npm install
+        npm publish
 
